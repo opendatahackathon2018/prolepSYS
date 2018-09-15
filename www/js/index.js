@@ -4,10 +4,6 @@ $(document).ready(function(){
         enableHighAccuracy: true
     });
     
-	$('.settings-btn').click(function(){
-		$(this).toggleClass('open');
-    });
-    
     $('.camera-btn').click(function(){
         navigator.camera.getPicture(cameraSuccess, cameraError, {
             quality: 25,
@@ -16,11 +12,19 @@ $(document).ready(function(){
     });
     
     $('.emergency-btn').click(function(){
-        emergencyRequest();
-    });
-
-    $('.tips-btn').click(function(){
-
+        swal({
+            title: 'Are you in danger?',
+            text: "By confirming this message an emergency help request will be made for you.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'I\'m in danger!'
+          }).then((result) => {
+            if (result.value) {
+                emergencyRequest();
+            }
+          })
     });
         
     function geolocationSuccess(currentLocation) {
@@ -52,10 +56,19 @@ $(document).ready(function(){
             }),
             success: function(response){
                 console.log(response);
-                
+                swal(
+                    'Success',
+                    'Your report was succesfully sent and is currently being evaluated.',
+                    'success'
+                  )
             },
             error: function(response){
                 console.error(response);
+                swal(
+                    'Error',
+                    'Something went wrong! Could you please try again?',
+                    'error'
+                );
             },
             contentType: "application/json"
         });
@@ -78,13 +91,29 @@ $(document).ready(function(){
                 "input_type": 'panic'
             }),
             success: function(response){
+                swal(
+                    'Success',
+                    'Now hang in there! Emergency responders are on their way.',
+                    'success'
+                );
                 console.log(response);
             },
             error: function(response){
+                swal(
+                    'Error',
+                    'Something went wrong! Could you please try again?',
+                    'error'
+                );
                 console.error(response);
             },
             contentType: "application/json"
         });
     }
+    
+});
 
+$(document).ajaxStart(function(){
+    $(".loading").removeClass("hidden");
+}).ajaxComplete(function(){
+    $(".loading").addClass("hidden");
 });
