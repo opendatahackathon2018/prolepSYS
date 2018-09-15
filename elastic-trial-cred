@@ -1,0 +1,9 @@
+Username
+elastic
+Password
+WzIXoY7DrVHnWZIvafYtRS1m
+Cloud ID
+prolepsys1:ZXUtd2VzdC0xLmF3cy5mb3VuZC5pbyQ5N2MzMzEzNTVlMjc0Zjc2ODBlZjBiMjQyMmVhNzIxMyRiY2E1NjcxY2UyNjk0OWE1YjVlMjRjYWJjNjRjZjg3NQ==
+
+#ESRI TO CONVERT TO LAT LONG
+<6312> +proj=tmerc +lat_0=0 +lon_0=33 +k=0.99995 +x_0=200000 +y_0=-3500000 +ellps=WGS84 +towgs84=8.846,-4.394,-1.122,-0.00237,-0.146528,0.130428,0.783926 +units=m +no_defs <>
