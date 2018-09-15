@@ -1,0 +1,29 @@
+{
+  "name": "prolepsys",
+  "authors": [
+    "Demetris Paschalides <00357jimmy@gmail.com>",
+    "Thanasis Tryfonos <@gmail.com>",
+    "Zacharias Georgiou <@gmail.com>",
+    "Moysis Symeonides <@gmail.com>"
+  ],
+  "description": "Mobile application for prolepSYS framework.",
+  "main": "www/index.html",
+  "keywords": [
+    "prolepsys",
+    "natural disaster",
+    "report fire",
+    "wildfire"
+  ],
+  "license": "GPL2.0",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
