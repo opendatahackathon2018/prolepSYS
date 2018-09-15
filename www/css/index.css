@@ -3,21 +3,23 @@ html, body {
     margin: 0;
 }
 
-
 .wrapper{
     width: 100vw;
     height: 100vh;
-    background-image: url(/img/prolepsys.svg); 
+    background-image: url(../img/prolepsys.svg); 
     background-position: center;
     background-size: 180vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-  
   
 .settings-btn{
     width: 30px;
     height: 15px;
     position: fixed;
-    margin: 10px;
+    margin: 15px 10px;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
@@ -30,7 +32,6 @@ html, body {
 }
   
 .settings-btn span{
-    display: block;
     position: fixed;
     height: 3px;
     width: 100%;
@@ -95,4 +96,18 @@ html, body {
     align-items: center;
     font-size: 1.1em;
     color: #EEEEEE;
+}
+
+
+.title{
+    padding-left: 60px;
+}
+
+.camera-btn{
+    width: 4em;
+    height: 4em;
+}
+
+.camera-btn img{
+    height: 100%;
 }
