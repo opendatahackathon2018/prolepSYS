@@ -1,9 +1,9 @@
 $(document).ready(function(){
-
+    
     navigator.geolocation.watchPosition(geolocationSuccess, geolocationError, {
         enableHighAccuracy: true
     });
-    
+
     $('.camera-btn').click(function(){
         navigator.camera.getPicture(cameraSuccess, cameraError, {
             quality: 25,
@@ -34,6 +34,19 @@ $(document).ready(function(){
                 "lat": currentLocation.coords.latitude,
                 "lon": currentLocation.coords.longitude,
             }));
+
+            /*
+            $.ajax({
+                type: "PUT",
+                url: "http://e2b15771.ngrok.io/users/update/" + localStorage.getItem("uuid"),
+                data: {
+                    "phonenumber":localStorage.getItem("phonenumber"),
+                    "lon":currentLocation.lon,
+                    "lat":currentLocation.lat
+                },
+                contentType: "application/json"
+            });
+            */
         }
     };
 
@@ -119,3 +132,75 @@ $(document).ready(function(){
 $(document).ajaxStart(function(){
 }).ajaxComplete(function(){
 });
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() { 
+    localStorage.setItem("uuid", device.uuid);
+ }
+
+swal({
+    title: 'Welcome to ProlepSYS',
+    text: "In order for us to inform you for a near danger we require your phone number. Would you be kind enough to provide it to us?",
+    type: 'question',
+    showCancelButton: true,
+    confirmButtonClass: 'btn btn--stripe btn--radius blue',
+    cancelButtonClass: 'btn btn--stripe btn--radius black',
+    confirmButtonText: 'Of course',
+    cancelButtonText: 'Maybe later'
+  }).then((result) => {
+    if (result.value) {
+        swal({
+            title: 'Fill it in.',
+            text: 'Type your phone number in order to receive near danger notifications',
+            input: 'tel',
+            showCancelButton: true,
+            inputPlaceholder: 'e.g +35799556677',
+            confirmButtonClass: 'btn btn--stripe btn--radius blue',
+            cancelButtonClass: 'btn btn--stripe btn--radius black',
+            allowOutsideClick: false
+        }).then((result) => {
+            localStorage.setItem("phonenumber",result.value);
+
+            console.log("Phonenumber: " + localStorage.getItem("phonenumber"));
+            console.log("UUID: " + localStorage.getItem("uuid"));
+            console.log("GeoLocation: " + localStorage.getItem("currentLocation"));
+
+            var currentLocation = JSON.parse(localStorage.getItem('currentLocation'));
+            /*
+            $.ajax({
+                type: "POST",
+                url: "http://e2b15771.ngrok.io/users/register",
+                data: {
+                    "phonenumber":localStorage.getItem("phonenumber"),
+                    "lon":currentLocation.lon,
+                    "lat":currentLocation.lat,
+                    "uuid": 'localStorage.getItem("uuid")'
+                },
+                success: function(response){
+                    console.log(response);
+                    swal({
+                        title: 'Success',
+                        text: 'You have been successfuly registered.',
+                        confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                        type: 'success',
+                    });
+                },
+                error: function(response){
+                    console.error(response);
+                    swal({
+                        title: 'Error',
+                        text: 'Something went wrong! Could you please try again?',
+                        confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                        type: 'error',
+                    });
+                },
+                contentType: "application/json"
+            });
+            */
+
+        });
+    }
+  })
+
+  
