@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    user-select: none
 }
 
 .wrapper{
@@ -104,10 +105,11 @@ html, body {
 }
 
 .camera-btn{
-    width: 4em;
-    height: 4em;
+    width: 5em;
+    height: 5em;
+    padding-bottom: 100px;
 }
 
 .camera-btn img{
-    height: 100%;
+    width: 100%;
 }

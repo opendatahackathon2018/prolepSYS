@@ -24,6 +24,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "sweetalert2": "^7.26.28"
   }
 }
