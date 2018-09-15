@@ -48,5 +48,6 @@ www/libs/*
 
 platforms/*
 res/*
+!res/icon/android/*
 plugins/*
 hooks/*
