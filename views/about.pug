@@ -1,0 +1,45 @@
+extends layout
+
+block content
+	include components/navbar.pug
+	//- Page Header
+	#about-header.page-header(data-parallax="true")
+	//- Page Content
+	.main.main-raised
+		.container
+			.row(style="padding-top: 60px;")
+				.col-md-8.ml-auto.mr-auto.text-center
+					h2.title Our Awesome Team
+					h5.description
+						| This is the paragraph where you can write more details about your team. Keep you user engaged by providing meaningful information.
+			.row(style="padding-top: 60px; padding-bottom: 80px;")
+				.col-md-3.text-center
+					.img-wrapper(style="padding: 10px 50px")
+						img.img-raised.rounded-circle.img-fluid(src='/img/placeholder.jpg')
+					h4.card-title John Doe
+					h6.card-category.text-muted Position here
+					p.card-description
+						| Description goes here
+				.col-md-3.text-center
+					.img-wrapper(style="padding: 10px 50px")
+						img.img-raised.rounded-circle.img-fluid(src='/img/placeholder.jpg')
+					h4.card-title John Doe
+					h6.card-category.text-muted Position here
+					p.card-description
+						| Description goes here
+				.col-md-3.text-center
+					.img-wrapper(style="padding: 10px 50px")
+						img.img-raised.rounded-circle.img-fluid(src='/img/placeholder.jpg')
+					h4.card-title John Doe
+					h6.card-category.text-muted Position here
+					p.card-description
+						| Description goes here
+				.col-md-3.text-center
+					.img-wrapper(style="padding: 10px 50px")
+						img.img-raised.rounded-circle.img-fluid(src='/img/placeholder.jpg')
+					h4.card-title John Doe
+					h6.card-category.text-muted Position here
+					p.card-description
+						| Description goes here
+							
+	include components/footer.pug

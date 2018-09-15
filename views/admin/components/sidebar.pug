@@ -1,0 +1,20 @@
+.sidebar(data-color='danger', data-background-color='black', data-image='/img/grid.png')
+  .logo
+    a.simple-text.logo-normal(href='/')
+      img(src="/img/logo.svg", alt="", style="height: 50px")
+      br
+      | ProlepSYS
+  .sidebar-wrapper
+    ul.nav
+      li.nav-item(class=title=='Dashboard'?'active':'')
+        a.nav-link(href='/admin/dashboard')
+          i.material-icons dashboard
+          p Dashboard
+      li.nav-item(class=title=='Statistics'?'active':'')
+        a.nav-link(href='/admin/statistics')
+          i.material-icons trending_up
+          p Statistics
+      li.nav-item
+        a.nav-link(href='/admin/login')
+          i.material-icons exit_to_app
+          p Log Out

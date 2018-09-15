@@ -1,0 +1,122 @@
+extends layout
+
+block header
+    link(rel='stylesheet', href='https://unpkg.com/leaflet@1.3.4/dist/leaflet.css', integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==', crossorigin='')
+    link(rel='stylesheet', href='/assets/Leaflet.markercluster-1.4.1/MarkerCluster.css')
+    link(rel='stylesheet', href='/assets/Leaflet.markercluster-1.4.1/MarkerCluster.Default.css')
+
+block content
+    .loading
+        h2.text-center Loading...
+    .content.p-0
+        #map(style="height: 92vh")
+
+block script
+    script(src='https://unpkg.com/leaflet@1.3.4/dist/leaflet.js', integrity='sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==', crossorigin='')
+    script(src='/assets/Leaflet.markercluster-1.4.1/leaflet.markercluster.js')
+    script.
+        const API_ENTRY = "#{process.env.API_ENTRY}";
+        const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+        const token = 'pk.eyJ1IjoiYWFuZHJlMjgiLCJhIjoiY2ptMGduNzBhMjh0cTNrcW5iYWo0Z3FxbCJ9.WXUfVNvyJjeiHDtzDuyE5Q';
+        const mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
+
+        // Markers' Groups
+        let fires = L.markerClusterGroup();
+
+        // Map Themes
+        let light = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+            dark = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}),
+            streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr});
+
+        // Map Setup
+        var map = L.map('map', {
+            center: [35.005608, 33.141370],
+            zoom: 10,
+            layers: [light, fires]
+        });
+
+        // Base Layers Setup
+        var baseLayers = {
+            "Light": light,
+            "Dark": dark,
+            "Streets": streets
+        };
+
+        // Overlays Setup
+        var overlays = {
+            "Fires": fires
+        };
+
+        // Adding the layers to the map
+        L.control.layers(baseLayers, overlays).addTo(map);
+
+        // Loads the forest fires on the map
+        function loadForestFires() {
+            let url = `${API_ENTRY}/events/`;
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+                contentType: "application/json",
+                success: function (data) {
+                    // Check for empty response
+                    if (!$.trim(data)) {
+                        console.log("Empty");
+                    }
+                    else {
+                        let total = data.length;
+                        console.log(`Total: ${total}`);
+                        console.log(data);
+                        for (let i = 0; i < total; i++) {
+                            // Get Marker Info
+                            let id = data[i]._id;
+                            let node = data[i]._source;
+                            let start_date = new Date(node.created_at);
+                            let input_type = node.input_type;
+                            let status = node.status;
+                            let lat = '';
+                            let lng = '';
+                            let image = '';
+                            if (node.location !== undefined) {
+                                let loc = node.location.split(',');
+                                lat = loc[0];
+                                lng = loc[1];
+                                console.log(lat,lng)
+                                image = node.image
+                            }
+
+
+                            // Set Popup
+                            // language=HTML
+                            let popup = `<p>
+                            <b>ID:</b> ${id}<br>
+                            <b>Start Date:</b> ${start_date}<br>
+                            <b>input_type:</b> ${input_type}<br>
+                            <b>status:</b> ${status}<br>
+                            <b>Location:</b> ${lat}, ${lng}</p>
+                            <img src="${image}" alt="">
+                            `;
+
+                            // Add To Layer
+                            if (node.location !== undefined) {
+
+                                fires.addLayer(L.marker([lat, lng]).bindPopup(popup, {
+                                    minWidth: 500
+                                }));
+                            }
+                        }
+                    }
+                },
+                error: function (jqxhr, textStatus, error) {
+                    console.log(textStatus);
+                },
+                complete: function (data) {
+                    $(".loading").hide();
+                },
+                timeout: 5000
+            });
+        }
+
+        loadForestFires();

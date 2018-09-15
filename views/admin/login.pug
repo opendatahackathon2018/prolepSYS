@@ -1,0 +1,29 @@
+extends ../layout
+
+block header
+
+block content
+	include ../components/navbar.pug
+	
+	.page-header(style="background-color: #3C4858; background-image: url('/img/grid.png'); background-size: 55%;")
+		.container
+			.row
+				.col-lg-4.col-md-6.ml-auto.mr-auto
+					.card.card-login
+						form.form(style="min-height: auto;", method='', action='')
+							.card-header.card-header-danger.text-center
+								h4.card-title Administrator
+							.card-body
+								.input-group
+									.input-group-prepend
+									span.input-group-text
+										i.material-icons perm_identity
+									input.form-control(placeholder='Username...', type='text')
+								.input-group
+									.input-group-prepend
+									span.input-group-text
+										i.material-icons lock_outline
+									input.form-control(placeholder='Password...', type='password')
+							.footer.text-center
+								a.btn.btn-primary.btn-link.btn-wd.btn-lg(href='/admin/dashboard') LOG IN
+block script

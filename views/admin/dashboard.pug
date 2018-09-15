@@ -1,0 +1,291 @@
+extends layout
+
+block header
+    link(rel='stylesheet', href='https://unpkg.com/leaflet@1.3.4/dist/leaflet.css', integrity='sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==', crossorigin='')
+    link(rel='stylesheet', href='/assets/Leaflet.markercluster-1.4.1/MarkerCluster.css')
+    link(rel='stylesheet', href='/assets/Leaflet.markercluster-1.4.1/MarkerCluster.Default.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/sweetalert2@7.26.28/dist/sweetalert2.min.css')
+
+block content
+    .content.p-0
+        #map(style="height: 92vh")
+
+    #exampleModalLong.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLongTitle', aria-hidden='true')
+        .modal-dialog.modal-md(role='document')
+            .modal-content
+                .modal-header
+                    h5#exampleModalLongTitle.modal-title
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body
+                    .row
+                        .col-md-12
+                            a(target="_blank")
+                                .text-center
+                                    img.img-fluid(src="/img/logo.svg", id="image-modal", style="max-height: 300px;")
+                    hr
+                    .row
+                        .col-12
+                            table
+                                tr
+                                    th Timestamp:
+                                    td(id="timestamp") Day Month Year HH:MM:SS #start-time
+                                tr
+                                    th Location:
+                                    td(id="latlog") 35.03893827832499, 33.29516971780112
+                                tr
+                                    th Danger Score:
+                                    td(id="score") show bar and number
+                .modal-footer
+                    //- button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    // button.btn.btn-warning.mr-auto(type='button') Crowd Assistance
+                    button.btn.btn-secondary(type='button', id='ignore', event_id='') Ignore
+                    button.btn.btn-danger(type='button', id='verify', event_id='') Verify
+
+
+block script
+    script(src='https://unpkg.com/leaflet@1.3.4/dist/leaflet.js', integrity='sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==', crossorigin='')
+    script(src='/assets/Leaflet.markercluster-1.4.1/leaflet.markercluster.js')
+    script(src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.28/dist/sweetalert2.min.js")
+    script.
+        const API_ENTRY = "#{process.env.API_ENTRY}";
+        const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+        const token = 'pk.eyJ1IjoiYWFuZHJlMjgiLCJhIjoiY2ptMGduNzBhMjh0cTNrcW5iYWo0Z3FxbCJ9.WXUfVNvyJjeiHDtzDuyE5Q';
+        const mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
+
+        // Markers' Groups
+        let events = L.markerClusterGroup({
+            spiderLegPolylineOptions: {  opacity: 0 }
+        });
+
+        // Map Themes
+        let light = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+            dark = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}),
+            streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr});
+
+        // Map Setup
+        var map = L.map('map', {
+            center: [35.005608, 33.141370],
+            zoom: 10,
+            layers: [light, events]
+        });
+
+        // Base Layers Setup
+        var baseLayers = {
+            "Light": light,
+            "Dark": dark,
+            "Streets": streets
+        };
+
+        // Overlays Setup
+        var overlays = {
+            "Live Events": events
+        };
+
+        // Adding the layers to the map
+        L.control.layers(baseLayers, overlays).addTo(map);
+        let url = `${API_ENTRY}/events/`;
+        $('#verify').click(
+            function (event) {
+                var event_id = $(event.target).attr('event_id');
+                $.ajax({
+                    method: 'PUT',
+                    dataType: 'json',
+                    url: url + event_id ,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'status': 'verified'
+                    }),
+                    success: function (data) {
+                        swal({
+                            title: 'Fire Verified!',
+                            text: "Appropriate authorities have been informed.",
+                            type: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: 'rgb(219, 47, 43)',
+                            confirmButtonText: 'OK'
+                        });
+                        updatePoints();
+                    },
+                    error: function (jqxhr, textStatus, error) {
+                        console.log(textStatus);
+                    },
+                    complete: function (data) {
+                        $('#exampleModalLong').modal('hide');
+                    },
+                });
+            }
+        );
+        $('#ignore').click(
+            function (event) {
+                var event_id = $(event.target).attr('event_id');
+                console.log(url);
+                console.log(event_id);
+                $.ajax({
+                    method: 'DELETE',
+                    dataType: 'json',
+                    url: url + event_id,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'status': 'deleted'
+                    }),
+                    success: function (data) {
+                        swal({
+                            title: 'Case Ignored!',
+                            text: "The specific case did not match a fire incident.",
+                            type: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: 'rgb(136, 141, 155);',
+                            confirmButtonText: 'OK'
+                        });
+                        updatePoints();
+
+                    },
+                    complete: function (data) {
+                        $('#exampleModalLong').modal('hide');
+                    },
+                    timeout: 5000
+                });
+            }
+        );
+
+        var markers = [];
+
+        var updatePoints = function () {
+
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+                contentType: "application/json",
+                success: function (data) {
+                    // Check for empty response
+                    if (!$.trim(data)) {
+                        console.log("Empty");
+                    }
+                    else {
+
+                        let total = data.length;
+                        console.log(`Total: ${total}`);
+                        console.log(data);
+                        events.refreshClusters(markers);
+                        events.removeLayers(markers);
+                        markers = [];
+                        for (let i = 0; i < total; i++) {
+                            // Get Marker Info
+                            let node = data[i]._source;
+                            let id = data[i]['_id'];
+                            let lat = '';
+                            let lng = '';
+                            if (node.location !== undefined) {
+                                let loc = node.location.split(',');
+                                lat = loc[0];
+                                lng = loc[1];
+                                console.log(lat, lng)
+                            }
+
+
+                            // Set Popup
+                            // language=HTML
+
+
+                            // Add To Layer
+                            if (node.location !== undefined) {
+                                var icon = new L.Icon({
+                                    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png'
+                                });
+                                if (node.input_type == "panic") {
+                                    var icon = new L.Icon({
+                                        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+                                    });
+                                }
+                                marker = L.marker([lat, lng], {icon: icon});
+                                marker.on('click',
+                                    function (e) {
+                                        if (node.image != undefined) {
+                                            $("#image-modal").attr("src", "data:image/png;base64," + node.image);
+                                        } else {
+                                            $("#image-modal").attr("src", "/img/logo.svg");
+                                        }
+
+                                        if (node.input_type == "panic"){
+                                            $('#exampleModalLongTitle').html(
+                                                "ALERT"
+                                            );
+
+                                        }else{
+                                            $('#exampleModalLongTitle').html(
+                                                "POSSIBLE EVENT"
+                                            );
+
+                                        }
+
+                                        console.log(node);
+                                        console.log($('#timestamp').html());
+                                        $('#score').html(node.score);
+                                        $('#latlog').html(node.location);
+                                        console.log(node.created_at);
+                                        $('#timestamp').html(node.created_at);
+                                        $('#verify').attr('event_id', id);
+                                        $('#ignore').attr('event_id', id);
+                                        if(data.status == "verified"){
+                                            $('#verify').addClass("inactive");
+                                        }else{
+                                            $('#verify').addClass("active");
+                                        }
+                                        $('#exampleModalLong').modal('show')
+                                    })
+                                markers.push(marker);
+                            }
+
+                        }
+
+                        events.addLayers(markers);
+                    }
+                },
+                error: function (jqxhr, textStatus, error) {
+                    console.log(textStatus);
+                },
+                complete: function (data) {
+
+                    $(".loading").hide();
+                },
+                timeout: 5000
+            })
+
+
+        };
+
+        updatePoints();
+
+        setInterval(updatePoints, 10000);
+
+
+        // Add To Layer
+
+
+        // events.addLayer(
+        // 	L.marker([35.03893827832499, 33.29516971780112]).on('click', (e) => {
+        // 		showEvent(123456);
+        // 	})
+        // );
+
+        function showEvent(node) {
+            if (node.image != undefined) {
+                $("#image-modal").attr("src", node.image);
+            }
+            if (node.input_type == "panic"){
+                $("#exampleModalLongTitle").html("PANIC");
+            }else{
+                $("#exampleModalLongTitle").html("FIRE EVENT");
+            }
+            console.log(node);
+            console.log($('#timestamp').html());
+            $('#score').html(node.score);
+            $('#latlog').html(node.location);
+            $('#timestamp').html(node.timestamp);
+
+            $('#exampleModalLong').modal('show')
+        }

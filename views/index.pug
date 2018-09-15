@@ -1,0 +1,380 @@
+extends layout
+
+block header
+	link(rel='stylesheet', href='https://www.amcharts.com/lib/3/plugins/export/export.css', type='text/css', media='all')
+
+block content
+	include components/navbar.pug
+	//- Page Header
+	#main-header.page-header(data-parallax='true')
+		#cy-map-bg
+			img(src="/img/bg.svg", alt="Background")
+		#cy-map-wrapper
+			img(src="/img/cyprus.svg", alt="Cyprus")
+		#marker1.marker
+		#marker2.marker
+		#marker3.marker
+		#marker4.marker
+		.container
+			.row
+				.col-md-6
+					h1.title ProlepSYS
+					h4
+						| Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque quibusdam quisquam illum incidunt iure, odit ea accusamus quos voluptatibus recusandae.
+	
+	//- Page Content
+	.main
+		
+		.section
+			.container
+				h2.title.text-center Your main section here
+				.row.align-items-center
+					.col-md-7
+						#chart1
+					.col-md-5
+						h4.info-title Chart Title Goes Here
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						
+		.section.text-center(style="background-color: #eee")
+			.container
+				h2.title.text-center Your main section here
+				.row.align-items-center
+					.col-md-5.text-right
+						h4.info-title Chart Title Goes Here
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+					.col-md-7
+						#chart2
+		
+		.section.text-center(style="background-color: #3C4858;")
+			.container
+				h2.title.text-center.text-white Your main section here
+				.row.align-items-center
+					.col-md-12
+						#chart3
+					.col-md-6.ml-auto.mr-auto.text-white
+						h4.info-title.text-white Chart Title Goes Here
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+		
+		.section.text-center(style="background-color: #eee")
+			.container
+				h2.title.text-center Your main section here
+				.row.align-items-center
+					.col-md-5.text-right
+						h4.info-title Chart Title Goes Here
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+					.col-md-7
+						#chart4
+		.section
+			.container
+				h2.title.text-center Your main section here
+				.row.align-items-center
+					.col-md-7
+						#chart5
+					.col-md-5
+						h4.info-title Chart Title Goes Here
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi neque, at pariatur, debitis qui reiciendis sunt, praesentium placeat incidunt accusantium voluptatem nam assumenda omnis facilis.
+						
+	//- Footer
+	include components/footer.pug
+block script
+	script(src='https://www.amcharts.com/lib/3/amcharts.js')
+	script(src='https://www.amcharts.com/lib/3/serial.js')
+	script(src='https://www.amcharts.com/lib/3/pie.js')
+	script(src='https://www.amcharts.com/lib/3/gauge.js')
+	script(src='https://www.amcharts.com/lib/3/plugins/export/export.min.js')
+	script(src='https://www.amcharts.com/lib/3/themes/light.js')
+	script(src='https://www.amcharts.com/lib/3/themes/dark.js')
+	script(src='https://www.amcharts.com/lib/3/themes/black.js')
+	script.
+		const API_ENTRY = "#{api_entry}";
+		let chart1 = AmCharts.makeChart( "chart1", {
+			"type": "pie",
+			"theme": "default",
+			"dataProvider": [ {
+				"country": "Lithuania",
+				"value": 260
+			}, {
+				"country": "Ireland",
+				"value": 201
+			}, {
+				"country": "Germany",
+				"value": 65
+			}, {
+				"country": "Australia",
+				"value": 39
+			}, {
+				"country": "UK",
+				"value": 19
+			}],
+			"valueField": "value",
+			"titleField": "country",
+			"outlineAlpha": 0.4,
+			"depth3D": 15,
+			"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+			"angle": 30,
+			"export": {
+				"enabled": true
+			}
+		});
+		
+		let chart2 = AmCharts.makeChart( "chart2", {
+			"type": "serial",
+			"dataProvider": [ {
+				"country": "USA",
+				"visits": 2025
+			}, {
+				"country": "China",
+				"visits": 1882
+			}, {
+				"country": "Japan",
+				"visits": 1809
+			}, {
+				"country": "Germany",
+				"visits": 1322
+			}, {
+				"country": "UK",
+				"visits": 1122
+			}, {
+				"country": "France",
+				"visits": 1114
+			}, {
+				"country": "India",
+				"visits": 984
+			}, {
+				"country": "Spain",
+				"visits": 711
+			}, {
+				"country": "Netherlands",
+				"visits": 665
+			}, {
+				"country": "Russia",
+				"visits": 580
+			}, {
+				"country": "South Korea",
+				"visits": 443
+			}, {
+				"country": "Canada",
+				"visits": 441
+			}, {
+				"country": "Brazil",
+				"visits": 395
+			} ],
+			"valueAxes": [ {
+				"gridColor": "#FFFFFF",
+				"gridAlpha": 0.2,
+				"dashLength": 0
+			}],
+			"gridAboveGraphs": true,
+			"startDuration": 1,
+			
+			"graphs": [ {
+				"balloonText": "[[category]]: <b>[[value]]</b>",
+				"fillAlphas": 0.8,
+				"lineAlpha": 0.2,
+				"type": "column",
+				"valueField": "visits"
+			} ],
+			"chartCursor": {
+				"categoryBalloonEnabled": false,
+				"cursorAlpha": 0,
+				"zoomable": false
+			},
+			"categoryField": "country",
+			"categoryAxis": {
+				"gridPosition": "start",
+				"gridAlpha": 0,
+				"tickPosition": "start",
+				"tickLength": 20,
+				"labelRotation": 45
+			},
+			"export": {
+				"enabled": true
+			}
+		});
+		
+		let chartData = generateChartData();
+
+		let chart3 = AmCharts.makeChart("chart3", {
+			"type": "serial",
+			"theme": "dark",
+			"marginRight": 80,
+			"dataProvider": chartData,
+			"valueAxes": [{
+				"position": "left",
+				"title": "Unique visitors"
+			}],
+			"graphs": [{
+				"id": "g1",
+				"fillAlphas": 0.4,
+				"valueField": "visits",
+				"balloonText": "<div style='margin:5px; font-size:19px;'>Visits:<b>[[value]]</b></div>"
+			}],
+			"chartScrollbar": {
+				"graph": "g1",
+				"scrollbarHeight": 80,
+				"backgroundAlpha": 0,
+				"selectedBackgroundAlpha": 0.1,
+				"selectedBackgroundColor": "#888888",
+				"graphFillAlpha": 0,
+				"graphLineAlpha": 0.5,
+				"selectedGraphFillAlpha": 0,
+				"selectedGraphLineAlpha": 1,
+				"autoGridCount": true,
+				"color": "#AAAAAA"
+			},
+			"chartCursor": {
+				"categoryBalloonDateFormat": "JJ:NN, DD MMMM",
+				"cursorPosition": "mouse"
+			},
+			"categoryField": "date",
+			"categoryAxis": {
+				"minPeriod": "mm",
+				"parseDates": true
+			},
+			"export": {
+				"enabled": true,
+				"dateFormat": "YYYY-MM-DD HH:NN:SS"
+			}
+		});
+
+		chart3.addListener("dataUpdated", zoomChart);
+		// when we apply theme, the dataUpdated event is fired even before we add listener, so
+		// we need to call zoomChart here
+		zoomChart();
+		// this method is called when chart is first inited as we listen for "dataUpdated" event
+		function zoomChart() {
+			// different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+			chart3.zoomToIndexes(chartData.length - 250, chartData.length - 100);
+		}
+
+		// generate some random data, quite different range
+		function generateChartData() {
+			var chartData = [];
+			// current date
+			var firstDate = new Date();
+			// now set 500 minutes back
+			firstDate.setMinutes(firstDate.getDate() - 1000);
+
+			// and generate 500 data items
+			var visits = 500;
+			for (var i = 0; i < 500; i++) {
+				var newDate = new Date(firstDate);
+				// each time we add one minute
+				newDate.setMinutes(newDate.getMinutes() + i);
+				// some random number
+				visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+				// add data item to the array
+				chartData.push({
+					date: newDate,
+					visits: visits
+				});
+			}
+			return chartData;
+		}
+		
+		let chart4 = AmCharts.makeChart("chart4", {
+			"type": "gauge",
+			"theme": "light",
+			"axes": [{
+				"axisAlpha": 0,
+				"tickAlpha": 0,
+				"labelsEnabled": false,
+				"startValue": 0,
+				"endValue": 100,
+				"startAngle": 0,
+				"endAngle": 270,
+				"bands": [{
+					"color": "#eee",
+					"startValue": 0,
+					"endValue": 100,
+					"radius": "100%",
+					"innerRadius": "85%"
+				}, {
+					"color": "#84b761",
+					"startValue": 0,
+					"endValue": 80,
+					"radius": "100%",
+					"innerRadius": "85%",
+					"balloonText": "90%"
+				}, {
+					"color": "#eee",
+					"startValue": 0,
+					"endValue": 100,
+					"radius": "80%",
+					"innerRadius": "65%"
+				}, {
+					"color": "#fdd400",
+					"startValue": 0,
+					"endValue": 35,
+					"radius": "80%",
+					"innerRadius": "65%",
+					"balloonText": "35%"
+				}, {
+					"color": "#eee",
+					"startValue": 0,
+					"endValue": 100,
+					"radius": "60%",
+					"innerRadius": "45%"
+				}, {
+					"color": "#cc4748",
+					"startValue": 0,
+					"endValue": 92,
+					"radius": "60%",
+					"innerRadius": "45%",
+					"balloonText": "92%"
+				}, {
+					"color": "#eee",
+					"startValue": 0,
+					"endValue": 100,
+					"radius": "40%",
+					"innerRadius": "25%"
+				}, {
+					"color": "#67b7dc",
+					"startValue": 0,
+					"endValue": 68,
+					"radius": "40%",
+					"innerRadius": "25%",
+					"balloonText": "68%"
+				}]
+			}],
+			"allLabels": [{
+				"text": "First option",
+				"x": "49%",
+				"y": "5%",
+				"size": 15,
+				"bold": true,
+				"color": "#84b761",
+				"align": "right"
+			}, {
+				"text": "Second option",
+				"x": "49%",
+				"y": "15%",
+				"size": 15,
+				"bold": true,
+				"color": "#fdd400",
+				"align": "right"
+			}, {
+				"text": "Third option",
+				"x": "49%",
+				"y": "24%",
+				"size": 15,
+				"bold": true,
+				"color": "#cc4748",
+				"align": "right"
+			}, {
+				"text": "Fourth option",
+				"x": "49%",
+				"y": "33%",
+				"size": 15,
+				"bold": true,
+				"color": "#67b7dc",
+				"align": "right"
+			}],
+			"export": {
+				"enabled": true
+			}
+		});
