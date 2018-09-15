@@ -60,7 +60,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "http://e2b15771.ngrok.io/events/",
+            url: "http://206.189.1.214:5000/events/",
             data: JSON.stringify({
                 "lat":currentLocation.lat,
                 "lon":currentLocation.lon,
@@ -99,7 +99,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "http://e2b15771.ngrok.io/events/",
+            url: "http://206.189.1.214:5000/events/",
             data: JSON.stringify({
                 "lat":currentLocation.lat,
                 "lon":currentLocation.lon,
@@ -139,26 +139,28 @@ function onDeviceReady() {
     localStorage.setItem("uuid", device.uuid);
  }
 
-swal({
-    title: 'Welcome to ProlepSYS',
-    text: "In order for us to inform you for a near danger we require your phone number. Would you be kind enough to provide it to us?",
-    type: 'question',
-    showCancelButton: true,
-    confirmButtonClass: 'btn btn--stripe btn--radius blue',
-    cancelButtonClass: 'btn btn--stripe btn--radius black',
-    confirmButtonText: 'Of course',
-    cancelButtonText: 'Maybe later'
-  }).then((result) => {
-    if (result.value) {
-        swal({
-            title: 'Fill it in.',
-            text: 'Type your phone number in order to receive near danger notifications',
-            input: 'tel',
-            showCancelButton: true,
-            inputPlaceholder: 'e.g +35799556677',
-            confirmButtonClass: 'btn btn--stripe btn--radius blue',
-            cancelButtonClass: 'btn btn--stripe btn--radius black',
-            allowOutsideClick: false
+ console.log(localStorage.getItem("isRegistered"));
+if(localStorage.getItem("isRegistered") == null){
+    swal({
+        title: 'Welcome to ProlepSYS',
+        text: "In order for us to inform you for a near danger we require your phone number. Would you be kind enough to provide it to us?",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn--stripe btn--radius blue',
+        cancelButtonClass: 'btn btn--stripe btn--radius black',
+        confirmButtonText: 'Of course',
+        cancelButtonText: 'Maybe later'
+    }).then((result) => {
+        if (result.value) {
+            swal({
+                title: 'Fill it in.',
+                text: 'Type your phone number in order to receive near danger notifications',
+                input: 'tel',
+                showCancelButton: true,
+                inputPlaceholder: 'e.g +35799556677',
+                confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                cancelButtonClass: 'btn btn--stripe btn--radius black',
+                allowOutsideClick: false
         }).then((result) => {
             localStorage.setItem("phonenumber",result.value);
 
@@ -167,15 +169,15 @@ swal({
             console.log("GeoLocation: " + localStorage.getItem("currentLocation"));
 
             var currentLocation = JSON.parse(localStorage.getItem('currentLocation'));
-            /*
+
             $.ajax({
                 type: "POST",
-                url: "http://e2b15771.ngrok.io/users/register",
+                url: "http://206.189.1.214:5000/users/",
                 data: {
-                    "phonenumber":localStorage.getItem("phonenumber"),
+                    "telephone":localStorage.getItem("phonenumber"),
                     "lon":currentLocation.lon,
                     "lat":currentLocation.lat,
-                    "uuid": 'localStorage.getItem("uuid")'
+                    "mobile_id": localStorage.getItem("uuid")
                 },
                 success: function(response){
                     console.log(response);
@@ -185,6 +187,8 @@ swal({
                         confirmButtonClass: 'btn btn--stripe btn--radius blue',
                         type: 'success',
                     });
+
+                    localStorage.setItem("isRegistered", "true");
                 },
                 error: function(response){
                     console.error(response);
@@ -197,10 +201,9 @@ swal({
                 },
                 contentType: "application/json"
             });
-            */
 
-        });
-    }
-  })
-
+         });
+        }
+    });         
+}
   
