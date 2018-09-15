@@ -1,115 +1,128 @@
+@font-face {
+    font-family: alert;
+    src: url(../font/C&C\ Red\ Alert.ttf);
+}
+
 html, body {
     height: 100%;
     margin: 0;
-    user-select: none
+    user-select: none;
+    font-family: alert !important;
 }
 
 .wrapper{
     width: 100vw;
     height: 100vh;
-    background-image: url(../img/prolepsys.svg); 
-    background-position: center;
-    background-size: 180vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-  
-.settings-btn{
-    width: 30px;
-    height: 15px;
-    position: fixed;
-    margin: 15px 10px;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -webkit-transition: .5s ease-in-out;
-    -moz-transition: .5s ease-in-out;
-    -o-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
-    cursor: pointer;
-}
-  
-.settings-btn span{
-    position: fixed;
-    height: 3px;
-    width: 100%;
-    background: #EEEEEE;
-    opacity: 1;
-    left: 0;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -webkit-transition: .25s ease-in-out;
-    -moz-transition: .25s ease-in-out;
-    -o-transition: .25s ease-in-out;
-    transition: .25s ease-in-out;
-}
-  
-.settings-btn span:nth-child(1) {
-    top: 0px;
-}
-
-.settings-btn span:nth-child(2),.settings-btn span:nth-child(3) {
-    top: 12px;
-}
-
-.settings-btn span:nth-child(4) {
-    top: 24px;
-}
-
-.settings-btn.open span:nth-child(1) {
-    top: 18px;
-    width: 0%;
-    left: 50%;
-}
-
-.settings-btn.open span:nth-child(2) {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.settings-btn.open span:nth-child(3) {
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-
-.settings-btn.open span:nth-child(4) {
-    top: 18px;
-    width: 0%;
-    left: 50%;
-}
-  
-.footer{
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    bottom: 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    font-size: 1.1em;
-    color: #EEEEEE;
+    flex-direction: column;
+    background-image: url("../img/prolepsys.svg");
+    background-size: 180vh;
+    background-position: center;
 }
 
+.btn.active.btn--stripe{
+    height: 17px;
+    top: 5px;
+}
 
-.title{
-    padding-left: 60px;
+.btn.active.btn--stripe:after{
+    height: 0px !important;
+}
+
+.red{
+    background-color: #EA4335 !important;
+    color: aliceblue !important;
+    border: none !important;
+}
+
+.red.btn--stripe::after{
+    background-color: #C82113;
+    border: none !important;
+    background-image: repeating-linear-gradient(45deg, #EA4335, #EA4335 1px, transparent 2px, transparent 5px);
+}
+
+.active{
+    border: none !important;
+}
+
+.active.btn--stripe::after{
+    border: none !important;
+}
+
+.yellow{
+    background-color: #FFBB00 !important;
+    color: aliceblue !important;
+    border: none !important;
+}
+
+.yellow.btn--stripe::after{
+    background-color: #DD9900;
+    border: none !important;
+    background-image: repeating-linear-gradient(45deg, #FFBB00, #FFBB00 1px, transparent 2px, transparent 5px);
+}
+
+.blue{
+    background-color: #4285F4 !important;
+    color: aliceblue !important;
+    border: none !important;
+}
+
+.blue.btn--stripe::after{
+    background-color: #2063D2;
+    border: none !important;
+    background-image: repeating-linear-gradient(45deg, #4285F4, #4285F4 1px, transparent 2px, transparent 5px);
+}
+
+.green{
+    background-color: #34A853 !important;
+    color: aliceblue !important;
+    border: none !important;
+}
+
+.green.btn--stripe::after{
+    background-color: #128631;
+    border: none !important;
+    background-image: repeating-linear-gradient(45deg, #34A853, #34A853 1px, transparent 2px, transparent 5px);
+}
+
+.black{
+    background-color: rgb(97, 97, 97) !important;
+    color: aliceblue !important;
+    border: none !important;
+}
+
+.black.btn--stripe::after{
+    background-color: rgb(61, 61, 61);
+    border: none !important;
+    background-image: repeating-linear-gradient(45deg, rgb(z), rgb(97, 97, 97) 1px, transparent 2px, transparent 5px);
+}
+
+.camera-btn,
+.emergency-btn{
+    text-transform: capitalize !important;
+    text-align: center !important;
+    width: 50%;
+    font-size: 1.5em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.emergency-btn{
+    font-family: alert !important;
+    height: 30%;
+    font-size: 40px !important;
 }
 
 .camera-btn{
-    width: 5em;
-    height: 5em;
-    padding-bottom: 100px;
+    font-family: alert !important;
+    font-size: 30px !important;
+    height: 10%;
 }
 
-.camera-btn img{
-    width: 100%;
+.swal2-styled.btn--stripe:after{    
+    height: 5px !important;
 }
+

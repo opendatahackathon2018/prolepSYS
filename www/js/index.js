@@ -17,8 +17,8 @@ $(document).ready(function(){
             text: "By confirming this message an emergency help request will be made for you.",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonClass: 'btn btn--stripe btn--radius blue',
+            cancelButtonClass: 'btn btn--stripe btn--radius red',
             confirmButtonText: 'I\'m in danger!'
           }).then((result) => {
             if (result.value) {
@@ -56,19 +56,21 @@ $(document).ready(function(){
             }),
             success: function(response){
                 console.log(response);
-                swal(
-                    'Success',
-                    'Your report was succesfully sent and is currently being evaluated.',
-                    'success'
-                  )
+                swal({
+                    title: 'Success',
+                    text: 'Your report was succesfully sent and is currently being evaluated.',
+                    confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                    type: 'success',
+                });
             },
             error: function(response){
                 console.error(response);
-                swal(
-                    'Error',
-                    'Something went wrong! Could you please try again?',
-                    'error'
-                );
+                swal({
+                    title: 'Error',
+                    text: 'Something went wrong! Could you please try again?',
+                    confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                    type: 'error',
+                });
             },
             contentType: "application/json"
         });
@@ -91,29 +93,29 @@ $(document).ready(function(){
                 "input_type": 'panic'
             }),
             success: function(response){
-                swal(
-                    'Success',
-                    'Now hang in there! Emergency responders are on their way.',
-                    'success'
-                );
                 console.log(response);
+                swal({
+                    title: 'Hang in there!',
+                    text: 'Emergency responders are on their way.',
+                    confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                    type: 'success',
+                });
             },
             error: function(response){
-                swal(
-                    'Error',
-                    'Something went wrong! Could you please try again?',
-                    'error'
-                );
                 console.error(response);
+                swal({
+                    title: 'Error',
+                    text: 'Something went wrong! Could you please try again?',
+                    confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                    type: 'error',
+                });
             },
             contentType: "application/json"
         });
     }
-    
+
 });
 
 $(document).ajaxStart(function(){
-    $(".loading").removeClass("hidden");
 }).ajaxComplete(function(){
-    $(".loading").addClass("hidden");
 });

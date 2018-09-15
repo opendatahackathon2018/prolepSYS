@@ -1,0 +1,55 @@
+  
+  .btn {
+    overflow: visible;
+    margin: 0;
+    padding: 5px 0px;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    line-height: normal;
+    cursor: pointer;
+    -moz-user-select: text;
+    user-select: text;
+    display: block;
+    text-decoration: none;
+    padding: 16px 36px 22px;
+    background-color: #fff;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 3px;
+    margin-bottom: 16px;
+  }
+
+  .btn::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  .btn--stripe {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .btn--stripe:after {
+    content: '';
+    display: block;
+    height: 15px;
+    width: 100%;
+    background-image: repeating-linear-gradient(45deg, #666, #666 1px, transparent 2px, transparent 5px);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-top: 1px solid #666;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-size: 7px 7px;
+  }
+
+  .btn--large {
+    width: 50%;
+  }
+
+  .btn--radius {
+    border-radius: 12px;
+  }
+  
