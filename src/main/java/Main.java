@@ -28,12 +28,14 @@ public class Main {
         @Override
         public void run() {
             try {
-            final String POST_PARAMS = "{\n" +
-                "\"lat\": " + this.latitude + ",\r\n" +
-                "\"lon\": " + this.longitude + ",\r\n" +
-                "\"image\": " + getBase64EncodedImage(this.url) + ",\r\n" +
-                "\"input_type\": " + "mobile" + ",\r\n" +
-                "\n}";
+            final String POST_PARAMS = "{" +
+                "\"lat\": " + this.latitude + "," +
+                "\"lon\": " + this.longitude + "," +
+                "\"image\": \"" + getBase64EncodedImage(this.url) + "\"," +
+                "\"input_type\": " + "\"mobile\"" + "" +
+                "}";
+
+            System.out.println(POST_PARAMS);
 
             URL obj = new URL("http://206.189.1.214:5000/events/");
 
