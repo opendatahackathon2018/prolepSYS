@@ -13,11 +13,11 @@ ProlepSYS
  
   
  ## Mobile Application
- Branch: _prolepsys-dashboard_ contains the source code for the mobile application
+ Branch: _prolepsys-mobile-application_ contains the source code for the mobile application
  
  
  ## Twitter client
- Branch: _prolepsys-dashboard_ contains the source code for the twitter client
+ Branch: _prolepsys-twitter-client_ contains the source code for the twitter client
  
  
  
