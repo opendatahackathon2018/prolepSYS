@@ -137,6 +137,25 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() { 
     localStorage.setItem("uuid", device.uuid);
+    cordova.plugins.diagnostic.isGpsLocationEnabled(function(enabled){
+        console.log("GPS location is " + (enabled ? "enabled" : "disabled"));
+        if(!enabled){
+            swal({
+                title: 'GPS not found',
+                text: "ProlepSYS requires your geolocation in order to operate. Could you please enable your GPS?",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn--stripe btn--radius blue',
+                cancelButtonClass: 'btn btn--stripe btn--radius black',
+                confirmButtonText: 'Of course',
+                cancelButtonText: 'Maybe later'
+            }).then((result) => {
+                cordova.plugins.diagnostic.switchToLocationSettings();
+            });
+        }
+    }, function(error){
+        console.error("The following error occurred: " + error);
+    }); 
  }
 
  console.log(localStorage.getItem("isRegistered"));

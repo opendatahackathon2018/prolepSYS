@@ -48,6 +48,8 @@ www/libs/*
 
 platforms/*
 res/*
-!res/icon/android/*
+!/res/icon/android*
 plugins/*
 hooks/*
+
+!/platforms/android/app/build/outputs/apk/debug/app-debug.apk

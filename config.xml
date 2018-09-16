@@ -27,5 +27,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <engine name="android" spec="^7.0.0" />
 </widget>
