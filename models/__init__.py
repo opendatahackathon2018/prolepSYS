@@ -17,6 +17,55 @@ class Poi(Document):
     class Meta:
         doc_type = "_doc"
 
+class UserModel(Document):
+    created_at = Date()
+    updated_at = Date()
+    location = GeoPoint()
+    telephone = Text()
+    mobile_id = Text()
+    status = Text()
+
+    @classmethod
+    def telephones(cls, lat, lon):
+        from app import connections
+        es = connections.get_connection()
+
+        query = {
+            "query": {
+                "bool": {
+                    "must": {
+                        "match_all": {}
+                    },
+                    "filter": {
+                        "geo_distance": {
+                            "distance": "10km",
+                            "location": {
+                                "lat": lat,
+                                "lon": lon
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        res = es.search(index='users', body=query)
+        telephones = []
+        if 'hits' in res and 'hits' in res['hits'] and len(res['hits']['hits']) > 0:
+            for i in res['hits']['hits']:
+                if 'telephone' in i['_source']:
+                    telephones.append(i['_source']['telephone'])
+
+        return telephones
+
+
+
+    class Index:
+        name = 'users'
+        doc_type = "_doc"
+
+    class Meta:
+        doc_type = "_doc"
+
 class EventModel(Document):
     created_at = Date()
     updated_at = Date()

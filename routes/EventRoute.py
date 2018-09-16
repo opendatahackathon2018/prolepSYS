@@ -1,12 +1,18 @@
 import io
 from datetime import datetime
 
+import boto3
 from flask.views import MethodView
 from flask import request, make_response, send_file, Response
-from utils.general import json_decorator, get_image_score
+from utils.general import json_decorator, get_image_score, send_sms
 from elasticsearch_dsl import *
-from models import EventModel, Poi
+from models import EventModel, Poi, UserModel
 
+fire_man_phone = '+35799937195' #zaharias
+#mayor = ''
+authorities_telephones = [fire_man_phone]
+
+victim = '+35799908367'# thanashs
 
 class EventView(MethodView):
 
@@ -15,9 +21,9 @@ class EventView(MethodView):
     def get(self, event_id):
         if event_id is None:
             s = EventModel.search()
-            s.exclude('terms', status='deleted')
+            s.exclude('terms', status="deleted")
             res = s.execute()
-            return res.hits.hits
+            return [i for i in res.hits.hits if 'status' not in i['_source'] or i['_source']['status'] !="deleted"]
         else:
             event = EventModel.get(event_id)
             return event.to_dict()
@@ -38,7 +44,7 @@ class EventView(MethodView):
         s = Poi.search()
 
         res = {"success":False}
-        if score>0.3:
+        if score>0.0:
             new_data = {
                 'location': str(data['lat']) + ',' + str(data['lon']),
                 'input_type': data['input_type']
@@ -47,8 +53,10 @@ class EventView(MethodView):
                 new_data['image'] = data['image']
 
             event = EventModel(
-                **new_data
-                ,created_at=datetime.now(),updated_at=datetime.now())
+                **new_data,
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
+                status="active")
             new_score = event.get_score_for_ifra()
             score = (score + new_score) / 2
             event.score = score
@@ -69,7 +77,22 @@ class EventView(MethodView):
 
         event.update(**new_data,updated_at=datetime.now())
         res = event.to_dict()
+        if event.status == 'real_fire':
+            loc = event.location.split(",")
+            for i in UserModel.telephones(loc[0], loc[1]):
+                print(i)
+                send_sms(i, 'Warning Fire near location. Caution is advised.')
+            for i in authorities_telephones:
+                send_sms(i, 'Warning wildfire detected. Emergency response is advised.')
+        if event.status == 'panic_accept':
+            send_sms(fire_man_phone, 'Emergency Assistance needed at '+
+                     'https://www.google.com/maps/@'+event.location+',15z'
+                     )
+            send_sms(victim, 'Assistance is on your way!!')
         res['id'] = event.meta.id
+
+
+
         return res
 
     def delete(self, event_id):
@@ -77,16 +100,3 @@ class EventView(MethodView):
         event.update(status="deleted")
         event.save()
         return {"success": True}
-
-# @json_decorator
-# def image(event_id):
-#     event = EventModel.get(event_id)
-#
-#
-#     pic = ''
-#     if 'image' in event.to_dict():
-#         pic = event.to_dict()['image']
-#     image_data = base64.decodebytes(pic.encode())
-#     return Response(image_data, mimetype='image/jpeg')
-
-

@@ -3,3 +3,5 @@ elasticsearch-dsl>=6.0.0,<7.0.0
 utm
 pyproj
 flask-cors
+boto3
+xmltodict

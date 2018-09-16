@@ -35,11 +35,28 @@ def get_image_score(image_content):
     print(data)
     res = requests.post("https://vision.googleapis.com/v1/images:annotate?key="+google_api_key, json=data)
     score = 0.0
-    keywords = ['wildfire']
+    keywords = ['wildfire','disaster']
     result = res.json()
     print(result)
+    # TODO add dynamic data: weather
     for tempRes in result['responses'][0]['labelAnnotations']:
         if tempRes['description'] in keywords:
 
             score+=float(tempRes['score'])
     return score
+
+def send_sms(number, message):
+    # send notification
+    import boto3
+
+    sns = boto3.client('sns')
+    sns.publish(
+        PhoneNumber=number,
+        Message= message, #,'Warning Fire near location. Caution is advised.',
+        MessageAttributes={
+            'AWS.SNS.SMS.SenderID': {
+                'DataType': 'String',
+                'StringValue': 'ProlepSYS'
+            }
+        }
+    )

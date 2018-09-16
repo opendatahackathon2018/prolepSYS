@@ -15,14 +15,18 @@ class PoisView(MethodView):
             Poi.search()
             s = Poi.search()
             try:
-                size = int(data['size'])
+                size = int(request.args.get('size'))
             except Exception:
-                size =1000
+                size =10000
             try:
-                begin = int(data['size'])
+                begin = int(request.args.get('begin'))
             except Exception:
                 begin =0
             res = s[begin:size].execute()
+            typos = request.args.get('type')
+            print(typos)
+            if (typos != None):
+                return [i for i in res.hits.hits if 'typos' in i['_source'] and i['_source']['typos'] == typos]
             return res.hits.hits
         else:
             pois = Poi.get(pois_id)
