@@ -120,6 +120,8 @@ public class Main {
             @Override
             public void onStatus(Status status) {
 
+                System.out.println(status);
+
                 Double latitude;
                 Double longitude;
 
@@ -132,7 +134,13 @@ public class Main {
                     longitude = (bbcoords[0].getLongitude() + bbcoords[1].getLongitude() + bbcoords[2].getLongitude() + bbcoords[3].getLongitude()) / bbcoords.length;
                 }
 
-                if(latitude == null || longitude == null) return;
+                System.out.println("Latitude: " + latitude);
+                System.out.println("Longitude: " + longitude);
+
+                if(latitude == null || longitude == null){
+                    latitude = 34.6807039;
+                    longitude = 33.0430062;
+                }
 
                 MediaEntity[] media = status.getMediaEntities();
                 for(MediaEntity m : media){
@@ -143,7 +151,7 @@ public class Main {
                     if(type.equals("image")) {
                         PROLEPSYS_SERVICE.submit(new ProlepSYSTask(mediaURL, latitude, longitude));
                     }
-                    
+
                 }
             }
 
