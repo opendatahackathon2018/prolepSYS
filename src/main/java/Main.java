@@ -143,6 +143,7 @@ public class Main {
                     if(type.equals("image")) {
                         PROLEPSYS_SERVICE.submit(new ProlepSYSTask(mediaURL, latitude, longitude));
                     }
+                    
                 }
             }
 
